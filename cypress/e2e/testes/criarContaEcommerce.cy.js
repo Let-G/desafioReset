@@ -5,13 +5,6 @@ const name = faker.name.firstName();
 const password = faker.internet.password();
 const email = faker.internet.email(name);
 
-function login() {
-  cy.get("input#email").type(`${email}{enter}`);
-  cy.get(
-    ".login-container > .block-customer-login > .block-content > #login-form > .fieldset > .password > .control > #pass"
-  ).type(`Jo12.${password}{enter}`);
-}
-
 describe("criar conta", () => {
   before(() => {
     cy.visit("https://magento.softwaretestingboard.com/");
@@ -37,7 +30,7 @@ describe("criar conta", () => {
 
   it("deve criar endereço", () => {
     cy.get(".box-billing-address > .box-actions > .action").click();
-    login();
+    cy.login(email, password);
     cy.get("#company").type(`${faker.company.name()}{enter}`);
     cy.get("#telephone").type(`${faker.phone.number()}}{enter}`);
     cy.get("#street_1").type(`${faker.address.streetName()}{enter}`);
@@ -58,7 +51,7 @@ describe("criar conta", () => {
     cy.get(
       ":nth-child(2) > .customer-welcome > .customer-menu > .header > :nth-child(1) > a"
     ).click();
-    login();
+    cy.login(email, password);
     cy.get(".base").should("have.text", "My Account");
   });
 });
